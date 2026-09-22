@@ -1,7 +1,9 @@
 # Tomen Agüita — Tienda Híbrida
 
-> **Proyecto académico** — Fundación Universitaria Compensar · Desarrollo de Aplicaciones Móviles Híbridas, Actividad 6.
-> App híbrida de e-commerce (Ionic + Angular + Capacitor) para la tienda de agua embotellada "Tomen Agüita", construida a partir del proyecto Android nativo original (`actividad6/nativa/`). No constituye una tienda real; los pagos son simulados.
+> **Proyecto académico** — Fundación Universitaria Compensar · Desarrollo de Aplicaciones Móviles Híbridas, .
+> App híbrida de e-commerce (Ionic + Angular + Capacitor) para la tienda de agua embotellada "Tomen Agüita", construida a partir del proyecto Android nativo original 
+<https://github.com/gegitrepo/TomenAguitaTienda>
+ No constituye una tienda real; los pagos son simulados.
 
 ## Tabla de contenidos
 
@@ -24,7 +26,11 @@
 
 ## Descripción general
 
-Un comprador puede: registrarse, iniciar sesión, ver el catálogo de agua embotellada, ver el detalle de un producto, agregarlo al carrito, ajustar cantidades, ver el subtotal y "finalizar" una compra simulada. La sesión, el carrito y la preferencia de tema (claro/oscuro) persisten localmente entre cierres de la app. La aplicación fue verificada tanto en navegador como en un dispositivo Android físico real.
+Tomen Agûita Hibrida, es la reinterpretacion de la version original nativa de Android. 
+Esta aplicación fue desarrollada con fines estrictamente educativos como parte de una actividad académica. No constituye una tienda real. 
+Sus caracteristicas estan limitadas a los requerimientos academicos y  no incluyen todas las funcionalidades originalmente diseñadas para su version Nativa Original.
+
+Consiste en Un comprador puede: registrarse, iniciar sesión, ver el catálogo de agua embotellada, ver el detalle de un producto, agregarlo al carrito, ajustar cantidades, ver el subtotal y "finalizar" una compra simulada. La sesión, el carrito y la preferencia de tema (claro/oscuro) persisten localmente entre cierres de la app. La aplicación fue verificada tanto en navegador como en un dispositivo Android físico real.
 
 | Dato | Valor |
 |---|---|
@@ -193,9 +199,7 @@ El objeto `firebaseConfig` en `src/environments/environment.ts` **no es un secre
 
 ## Nota de seguridad
 
-Durante la auditoría del proyecto nativo (`actividad6/nativa/`) se encontraron claves de Stripe sandbox (`pk_test_.../sk_test_...`) comprometidas en su historial de git. Son claves de prueba, no de producción, pero de todas formas es una mala práctica. **Esta app híbrida no integra Stripe ni reutiliza esas claves** — el checkout es simulado.
-
-Adicionalmente, las reglas de Firestore actuales del proyecto (`allow read, write: if request.auth != null`, ver [Problemas encontrados y corregidos](#problemas-encontrados-y-corregidos) punto 1) permiten a **cualquier usuario autenticado** leer y escribir cualquier documento de la base de datos. Es una configuración razonable para un proyecto académico de alcance acotado, pero **no debe usarse tal cual en producción real**.
+Las reglas de Firestore actuales del proyecto (`allow read, write: if request.auth != null`, ver [Problemas encontrados y corregidos](#problemas-encontrados-y-corregidos) punto 1) permiten a **cualquier usuario autenticado** leer y escribir cualquier documento de la base de datos. Es una configuración razonable para un proyecto académico de alcance acotado, pero **no debe usarse tal cual en producción real**.
 
 ## Roadmap opcional
 
@@ -204,3 +208,17 @@ Adicionalmente, las reglas de Firestore actuales del proyecto (`allow read, writ
 - Reglas de seguridad de Firestore más estrictas (hoy son intencionalmente permisivas para cualquier usuario autenticado, ver [Nota de seguridad](#nota-de-seguridad)): por ejemplo, restringir la escritura en `usuarios/{uid}` al propio usuario y la escritura en `productos` a un rol vendedor/administrador si esos roles llegaran a implementarse.
 - Búsqueda y filtros en el catálogo.
 - Recuperación de contraseña (`sendPasswordResetEmail` de Firebase Auth), presente en el nativo pero no incluida aquí por no ser parte del alcance mínimo.
+
+
+## Información académica
+
+| Campo | Detalle |
+|---|---|
+| Institución | Fundación Universitaria Compensar |
+| Programa | Desarrollo de Aplicaciones Hibridas |
+| Autor | Gonzalo Enrique González |
+| Contacto | gegonzalez.1208@gmail.com |
+| Fecha | Septiembre 2026 |
+
+### Aviso legal
+Este proyecto es de carácter **exclusivamente académico**. No constituye un servicio comercial real. Los datos de usuarios, productos y pedidos son completamente ficticios. 
