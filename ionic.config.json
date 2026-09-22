@@ -1,0 +1,7 @@
+{
+  "name": "tienda-hibrida",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
