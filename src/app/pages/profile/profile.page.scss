@@ -1,0 +1,22 @@
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 24px;
+
+  ion-avatar {
+    width: 88px;
+    height: 88px;
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    margin: 4px 0 0;
+  }
+}
