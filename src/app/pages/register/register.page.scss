@@ -1,5 +1,7 @@
 .auth-content {
-  --background: var(--ion-color-light);
+  // Sin override de --background: el fondo por defecto de ion-content ya
+  // responde a la clase .ion-palette-dark (ver AppComponent), a diferencia
+  // de --ion-color-light, que es fijo y no tiene variante oscura.
 }
 
 .auth-wrapper {

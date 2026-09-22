@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonBackButton,
@@ -41,26 +41,32 @@ export class ProductDetailPage implements OnInit {
   private readonly productService = inject(ProductService);
   private readonly cartService = inject(CartService);
 
-  product: Product | null = null;
-  loading = true;
-  notFound = false;
+  // Signals en vez de campos planos: getProductById() usa el SDK de Firebase
+  // directamente (sin @angular/fire), cuyas promesas pueden resolver fuera
+  // del zone de Angular. Un campo normal no dispara el redibujado de la
+  // vista aunque su valor sí quede actualizado.
+  readonly product = signal<Product | null>(null);
+  readonly loading = signal(true);
+  readonly notFound = signal(false);
   quantity = 1;
   added = false;
 
   async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
-      this.notFound = true;
-      this.loading = false;
+      this.notFound.set(true);
+      this.loading.set(false);
       return;
     }
-    this.product = await this.productService.getProductById(id);
-    this.notFound = this.product === null;
-    this.loading = false;
+    const product = await this.productService.getProductById(id);
+    this.product.set(product);
+    this.notFound.set(product === null);
+    this.loading.set(false);
   }
 
   increment(): void {
-    if (this.product && this.quantity < this.product.stock) {
+    const product = this.product();
+    if (product && this.quantity < product.stock) {
       this.quantity++;
     }
   }
@@ -72,10 +78,11 @@ export class ProductDetailPage implements OnInit {
   }
 
   async addToCart(): Promise<void> {
-    if (!this.product) {
+    const product = this.product();
+    if (!product) {
       return;
     }
-    await this.cartService.addItem(this.product, this.quantity);
+    await this.cartService.addItem(product, this.quantity);
     this.added = true;
     setTimeout(() => {
       this.router.navigateByUrl('/catalog');

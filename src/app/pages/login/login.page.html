@@ -26,14 +26,14 @@
         </ion-item>
       </ion-list>
 
-      @if (errorMessage) {
+      @if (errorMessage()) {
         <ion-text color="danger">
-          <p class="auth-error">{{ errorMessage }}</p>
+          <p class="auth-error">{{ errorMessage() }}</p>
         </ion-text>
       }
 
-      <ion-button expand="block" type="submit" class="ion-margin-top" [disabled]="loading">
-        @if (loading) {
+      <ion-button expand="block" type="submit" class="ion-margin-top" [disabled]="loading()">
+        @if (loading()) {
           <ion-spinner name="dots"></ion-spinner>
         } @else {
           <span>Ingresar</span>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   IonAvatar,
@@ -50,18 +50,22 @@ export class ProfilePage implements OnInit {
   private readonly router = inject(Router);
 
   user: AppUser | null = null;
-  darkMode = false;
+  // Signal en vez de un campo plano: Preferences (Capacitor) puede resolver
+  // fuera del zone de Angular, y un campo normal no dispara el redibujado
+  // del <ion-toggle> aunque su valor sí quede actualizado.
+  readonly darkMode = signal(false);
 
   async ngOnInit(): Promise<void> {
     this.user = this.authService.currentUser;
     const savedTheme = await this.storage.get<'dark' | 'light'>(STORAGE_KEYS.theme);
-    this.darkMode = savedTheme === 'dark';
+    this.darkMode.set(savedTheme === 'dark');
   }
 
   async toggleTheme(event: CustomEvent): Promise<void> {
-    this.darkMode = (event.detail as { checked: boolean }).checked;
-    document.documentElement.classList.toggle('ion-palette-dark', this.darkMode);
-    await this.storage.set(STORAGE_KEYS.theme, this.darkMode ? 'dark' : 'light');
+    const checked = (event.detail as { checked: boolean }).checked;
+    this.darkMode.set(checked);
+    document.documentElement.classList.toggle('ion-palette-dark', checked);
+    await this.storage.set(STORAGE_KEYS.theme, checked ? 'dark' : 'light');
   }
 
   async logout(): Promise<void> {

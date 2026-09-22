@@ -8,19 +8,19 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  @if (loading) {
+  @if (loading()) {
     <div class="loading-wrapper">
       <ion-spinner name="crescent"></ion-spinner>
     </div>
   }
 
-  @if (!loading && notFound) {
+  @if (!loading() && notFound()) {
     <div class="not-found">
       <p>No encontramos este producto.</p>
     </div>
   }
 
-  @if (!loading && product) {
+  @if (!loading() && product(); as product) {
     <div class="detail">
       <img [src]="product.imagenUrl || 'assets/images/logo.png'" [alt]="product.nombre" class="detail-image" />
       <h1>{{ product.nombre }}</h1>

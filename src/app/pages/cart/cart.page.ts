@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   IonBackButton,
@@ -46,7 +46,10 @@ export class CartPage {
   private readonly router = inject(Router);
   private readonly alertController = inject(AlertController);
 
-  checkingOut = false;
+  // Signal en vez de campo plano: CartService.clear() persiste en
+  // @capacitor/preferences, cuya promesa puede resolver fuera del zone de
+  // Angular. Un campo normal dejaría el botón deshabilitado para siempre.
+  readonly checkingOut = signal(false);
 
   async increment(item: CartItem): Promise<void> {
     if (item.cantidad < item.product.stock) {
@@ -63,10 +66,10 @@ export class CartPage {
   }
 
   async checkout(): Promise<void> {
-    this.checkingOut = true;
+    this.checkingOut.set(true);
     const orderNumber = `TA-${Date.now()}`;
     await this.cartService.clear();
-    this.checkingOut = false;
+    this.checkingOut.set(false);
 
     const alert = await this.alertController.create({
       header: '¡Compra simulada exitosa!',

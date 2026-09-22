@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -42,8 +42,13 @@ export class LoginPage {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  loading = false;
-  errorMessage = '';
+  // Signals en vez de campos planos: AuthService usa el SDK de Firebase
+  // directamente (sin @angular/fire), cuyas promesas pueden resolver fuera
+  // del zone de Angular. Un campo normal no dispara el redibujado de la
+  // vista aunque su valor sí quede actualizado (el botón se ve bloqueado
+  // para siempre y el error nunca aparece).
+  readonly loading = signal(false);
+  readonly errorMessage = signal('');
 
   async submit(): Promise<void> {
     if (this.form.invalid) {
@@ -51,17 +56,17 @@ export class LoginPage {
       return;
     }
 
-    this.loading = true;
-    this.errorMessage = '';
+    this.loading.set(true);
+    this.errorMessage.set('');
     const { email, password } = this.form.getRawValue();
 
     try {
       await this.authService.login(email, password);
       await this.router.navigateByUrl('/catalog', { replaceUrl: true });
     } catch {
-      this.errorMessage = 'Correo o contraseña incorrectos. Verifica tus datos.';
+      this.errorMessage.set('Correo o contraseña incorrectos. Verifica tus datos.');
     } finally {
-      this.loading = false;
+      this.loading.set(false);
     }
   }
 }

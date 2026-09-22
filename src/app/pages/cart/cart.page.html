@@ -46,7 +46,7 @@
         <span>Subtotal</span>
         <strong>{{ cartService.subtotal() | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</strong>
       </div>
-      <ion-button expand="block" [disabled]="checkingOut" (click)="checkout()">
+      <ion-button expand="block" [disabled]="checkingOut()" (click)="checkout()">
         Finalizar compra
       </ion-button>
     </div>
