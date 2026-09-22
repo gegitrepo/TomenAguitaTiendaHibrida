@@ -1,0 +1,36 @@
+.cart-image {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: var(--ion-color-light);
+}
+
+.cart-item-price {
+  color: var(--ion-color-primary);
+  font-weight: 600;
+}
+
+.cart-quantity {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  span {
+    min-width: 18px;
+    text-align: center;
+  }
+}
+
+.cart-summary {
+  padding: 16px;
+  border-top: 1px solid var(--ion-color-light-shade);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}

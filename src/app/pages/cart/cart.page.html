@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/catalog"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mi carrito</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (cartService.items().length === 0) {
+    <app-empty-state
+      icon="cart-outline"
+      message="Tu carrito está vacío. Agrega productos desde el catálogo."
+    ></app-empty-state>
+  }
+
+  @if (cartService.items().length > 0) {
+    <ion-list>
+      @for (item of cartService.items(); track item.product.id) {
+        <ion-item>
+          <img [src]="item.product.imagenUrl || 'assets/images/logo.png'" [alt]="item.product.nombre" class="cart-image" slot="start" />
+          <ion-label>
+            <h2>{{ item.product.nombre }}</h2>
+            <p>{{ item.product.presentacion }}</p>
+            <p class="cart-item-price">{{ item.product.precio | currency: 'COP' : 'symbol-narrow' : '1.0-0' }} c/u</p>
+          </ion-label>
+          <div class="cart-quantity" slot="end">
+            <ion-button fill="clear" size="small" (click)="decrement(item)">
+              <ion-icon name="remove-circle-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <span>{{ item.cantidad }}</span>
+            <ion-button fill="clear" size="small" (click)="increment(item)">
+              <ion-icon name="add-circle-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" size="small" color="danger" (click)="remove(item)">
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-item>
+      }
+    </ion-list>
+
+    <div class="cart-summary">
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <strong>{{ cartService.subtotal() | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</strong>
+      </div>
+      <ion-button expand="block" [disabled]="checkingOut" (click)="checkout()">
+        Finalizar compra
+      </ion-button>
+    </div>
+  }
+</ion-content>
