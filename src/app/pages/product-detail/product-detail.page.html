@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/catalog"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalle del producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (loading) {
+    <div class="loading-wrapper">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  }
+
+  @if (!loading && notFound) {
+    <div class="not-found">
+      <p>No encontramos este producto.</p>
+    </div>
+  }
+
+  @if (!loading && product) {
+    <div class="detail">
+      <img [src]="product.imagenUrl || 'assets/images/logo.png'" [alt]="product.nombre" class="detail-image" />
+      <h1>{{ product.nombre }}</h1>
+      <p class="presentation">{{ product.presentacion }}</p>
+      <p class="price">{{ product.precio | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</p>
+      <p class="description">{{ product.descripcion }}</p>
+      <p class="stock" [class.low]="product.stock <= 5">Disponibles: {{ product.stock }}</p>
+
+      <div class="quantity-selector">
+        <ion-button fill="clear" (click)="decrement()" [disabled]="quantity <= 1">
+          <ion-icon name="remove-circle-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <span class="quantity-value">{{ quantity }}</span>
+        <ion-button fill="clear" (click)="increment()" [disabled]="quantity >= product.stock">
+          <ion-icon name="add-circle-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+
+      <ion-button expand="block" (click)="addToCart()" [disabled]="product.stock <= 0 || added">
+        @if (added) {
+          <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+        }
+        {{ added ? 'Agregado al carrito' : 'Agregar al carrito' }}
+      </ion-button>
+    </div>
+  }
+</ion-content>

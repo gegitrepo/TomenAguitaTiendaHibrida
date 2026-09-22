@@ -1,0 +1,20 @@
+<ion-card
+  button="true"
+  [routerLink]="['/product', product.id]"
+  class="product-card"
+>
+  <img [src]="product.imagenUrl || 'assets/images/logo.png'" [alt]="product.nombre" class="product-image" />
+  <ion-card-content>
+    <h3 class="product-name">{{ product.nombre }}</h3>
+    <p class="product-presentation">{{ product.presentacion }}</p>
+    <div class="product-footer">
+      <span class="product-price">{{ product.precio | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</span>
+      <ion-button size="small" fill="solid" (click)="onAddToCart($event)" [disabled]="product.stock <= 0">
+        <ion-icon name="cart-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </div>
+    @if (product.stock <= 0) {
+      <ion-badge color="danger">Agotado</ion-badge>
+    }
+  </ion-card-content>
+</ion-card>

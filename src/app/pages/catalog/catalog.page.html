@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Tomen Agüita</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/cart']">
+        <ion-icon name="cart-outline" slot="icon-only"></ion-icon>
+        @if (cartService.totalItems() > 0) {
+          <ion-badge color="danger">{{ cartService.totalItems() }}</ion-badge>
+        }
+      </ion-button>
+      <ion-button [routerLink]="['/profile']">
+        <ion-icon name="water-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (productService.loading()) {
+    <div class="loading-wrapper">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando catálogo...</p>
+    </div>
+  }
+
+  @if (!productService.loading() && productService.error()) {
+    <app-empty-state icon="alert-circle-outline" [message]="productService.error()!"></app-empty-state>
+  }
+
+  @if (!productService.loading() && !productService.error() && productService.products().length === 0) {
+    <app-empty-state icon="water-outline" message="No hay productos disponibles por ahora."></app-empty-state>
+  }
+
+  @if (!productService.loading() && !productService.error()) {
+    <div class="product-grid">
+      @for (product of productService.products(); track product.id) {
+        <app-product-card [product]="product" (addToCart)="onAddToCart($event)"></app-product-card>
+      }
+    </div>
+  }
+</ion-content>
